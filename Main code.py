@@ -1,6 +1,12 @@
 #Importing modules
 import csv
 import time as t
+import sys
+import mysql.connector as sql
+
+#Establishing connection with MySQL
+con=sql.connect(host="localhost",user="ADLI",passwd="Adli@0805",database="EVENTS")
+cursor=con.cursor()
 
 
 #Signup function 
@@ -54,22 +60,160 @@ def login():
 #Home page function
 def homepage():
     sel=input('\nIf you want to create an event type ''c'' \nIf you want to view existing events type ''v''>>>>>>>>>>::')
-    if sel=='c':
+    if sel.lower()=='c':
         create_event=open('create event.csv','a')
         name=input('Enter event name :')
-        Etype=input('\nWhat type of event is this (art/science/sports) :')
         des=input('Please give a short description of your event :')
+        while True:
+            
+            Etype=input("Enter event type (music/arts/science/sports): ")
+            if Etype.lower()== "music":
+                print("The default fields are as follows:\nName\nDOB\nMobile number\nEmail\nAddress\nProfession\nAge\n\nYou can add 2 more fields of your choice if you wish")
+                b=input("Do you wish to add any more fields in your application form ? (Y)")
+                if b.lower()=="y":
+                      print("You can add the following fields : \nInstrument-1\nNumber of Participants-2\nStyle-3")
+                      choice1=input("Enter the number near the field you want to add :")
+                      if choice1 == "1" or choice1=="2" or choice1=="3":
+                          datatype1="VARCHAR(20)"
+                          if choice1 =="1":
+                              choice1="INSTRUMENT"
+                          elif choice1 == "2":
+                              choice1="PARTICIPANTS_NUMBER"
+                              datatype1="INT"
+                          else:
+                              choice1="STYLE"
+                      st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+")"
+                      question=input("Would you like to add more ?(Y)")
+                      if question.lower()=="y":
+                          choice2=input("Enter the number near the field you want to add :")
+                          if choice2 == "1" or choice2=="2" or choice2=="3":
+                              datatype2="VARCHAR(20)"
+                          if choice2 =="1":
+                              choice2="INSTRUMENT"
+                          elif choice2 == "2":
+                              choice2="PARTICIPANTS_NUMBER"
+                              datatype2="INT"
+                          else:
+                              choice2="STYLE"
+                          st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+","+choice2+" "+datatype2+")"
+                      
+                else:
+                    st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT"+")"
+                break
+
+            elif Etype.lower()=="arts":
+                print("The default fields are as follows:\nName\nDOB\nMobile number\nEmail\nAddress\nProfession\nAge\n\nYou can add 2 more fields of your choice if you wish")
+                b=input("Do you wish to add any more fields in your application form ? (Y)")
+                if b.lower()=="y":
+                    print("You can add the following fields : \nTitle of Entry-1\nNumber of Participants-2\nStyle-3")
+                    choice1=input("Enter the number near the field you want to add :")
+                    if choice1 == "1" or choice1=="2" or choice1=="3":
+                       datatype1="VARCHAR(40)"
+                       if choice1 =="1":
+                           choice1="TITLE_OF_ENTRY"
+                       elif choice1 == "2":
+                           choice1="PARTICIPANTS_NUMBER"
+                           datatype1="INT"
+                       else:
+                           choice1="STYLE"
+                    st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+")"
+                    question=input("Would you like to add more ?(Y)")
+                    if question.lower()=="y":
+                        choice2=input("Enter the number near the field you want to add :")
+                        if choice2 == "1" or choice2=="2" or choice2=="3":
+                          datatype2="VARCHAR(40)"
+                          if choice2 =="1":
+                              choice2="TITLE_OF_ENTRY"
+                          elif choice2 == "2":
+                              choice2="PARTICIPANTS_NUMBER"
+                              datatype2="INT"
+                          else:
+                              choice2="STYLE"
+                          st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+","+choice2+" "+datatype2+")"
+                else:
+                    st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT"+")"
+                break
+
+            elif Etype.lower()=="science":
+                print("The default fields are as follows:\nName\nDOB\nMobile number\nEmail\nAddress\nProfession\nAge\n\nYou can add 2 more fields of your choice if you wish")
+                b=input("Do you wish to add any more fields in your application form ? (Y)")
+                if b.lower()=="y":
+                    print("You can add the following fields : \nPreferred language-1\nNumber of Participants-2\nProject title-3")
+                    choice1=input("Enter the number near the field you want to add :")
+                    if choice1 == "1" or choice1=="2" or choice1=="3":
+                       datatype1="VARCHAR(40)"
+                       if choice1 =="1":
+                           choice1="PREFERRED_LANGUAGE"
+                       elif choice1 == "2":
+                           choice1="PARTICIPANTS_SOLO_TEAM"
+                           datatype1="INT"
+                       else:
+                           choice1="PROJECT_TITLE"
+                    st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+")"
+                    question=input("Would you like to add more ?(Y)")
+                    if question.lower()=="y":
+                        choice2=input("Enter the number near the field you want to add :")
+                        if choice2 == "1" or choice2=="2" or choice2=="3":
+                          datatype2="VARCHAR(40)"
+                          if choice2 =="1":
+                              choice2="PREFERRED LANGUAGE"
+                          elif choice2 == "2":
+                              choice2="PARTICIPANTS_NUMBER"
+                              datatype2="INT"
+                          else:
+                              choice2="PROJECT_TITLE"
+                          st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+","+choice2+" "+datatype2+")"
+                else:
+                    st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT"+")"
+                    break
+
+            elif Etype.lower()=="sports":
+                print("The default fields are as follows:\nName\nDOB\nMobile number\nEmail\nAddress\nProfession\nAge\n\nYou can add 2 more fields of your choice if you wish")
+                b=input("Do you wish to add any more fields in your application form ? (Y)")
+                if b.lower()=="y":
+                    print("You can add the following fields : \nTeam name-1\nEvent-2\nAge category-3")
+                    choice1=input("Enter the number near the field you want to add :")
+                    if choice1 == "1" or choice1=="2" or choice1=="3":
+                       datatype1="VARCHAR(40)"
+                       if choice1 =="1":
+                           choice1="TEAM_NAME"
+                       elif choice1 == "2":
+                           choice1="EVENT"
+                       else:
+                           choice1="AGE_CATEGORY"
+                    st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+")"
+                    question=input("Would you like to add more ?(Y)")
+                    if question.lower()=="y":
+                        choice2=input("Enter the number near the field you want to add :")
+                        if choice2 == "1" or choice2=="2" or choice2=="3":
+                          datatype2="VARCHAR(40)"
+                          if choice2 =="1":
+                              choice2="TEAM NAME"
+                          elif choice2 == "2":
+                              choice2="EVENT"
+                          else:
+                              choice2="AGE_CATEGORY"
+                          st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+","+choice2+" "+datatype2+")"
+                else:
+                    st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT"+")"
+                break
+            else:
+                print("Invalid input! Try again")
+                continue
+              
+        cursor.execute(st)
+
         Ewrite=csv.writer(create_event)
         Ewrite.writerow([name,Etype,des])
         create_event.close()
         print('  EVENT UPDATED! ')
         Q=input('\nIf you want to go back to home page type  ''H'' \nTo logout type  ''O'' ? :')
         if Q.upper()=='H':
-           homepage()
+            homepage()
         elif Q.upper()=='O':
             main_home()
         create_event.close()
-    elif sel=='v':
+    elif sel.lower()=='v':
         view_event=open('create event.csv','r')
         Eread=csv.reader(view_event)
         for i in Eread:
@@ -141,6 +285,7 @@ def main_home():
             homepage()
             break
         elif choice=='3':
+            sys.exit()
             quit()
         else:
             choice=input("Invalid input. Try again !\n")
@@ -153,3 +298,4 @@ print("\t\t A place where organizers meet participants\n\n\n")
 main_home()
 
 homepage()
+
