@@ -12,7 +12,7 @@ cursor=con.cursor()
 #Signup function 
 def signup():
     username=input("Your username : ")
-    file1=open("Login credentials.csv","r")
+    file1=open("Login credentials.csv","r",newline="")
     while True:
         a=csv.reader(file1)
         for i in a:
@@ -42,7 +42,7 @@ def login():
         username=input("Enter your username : ")
         password=input("Enter password : ")
         lst=[username,password]
-        file1=open("Login credentials.csv","r")
+        file1=open("Login credentials.csv","r",newline="")
         a=csv.reader(file1)
         if lst not in a:
             print("Username or password is incorrect")
@@ -61,7 +61,7 @@ def login():
 def homepage():
     sel=input('\nIf you want to create an event type ''c'' \nIf you want to view existing events type ''v''>>>>>>>>>>::')
     if sel.lower()=='c':
-        create_event=open('create event.csv','a')
+        create_event=open('create event.csv','a',newline="")
         name=input('Enter event name :')
         des=input('Please give a short description of your event :')
         while True:
@@ -83,6 +83,7 @@ def homepage():
                           else:
                               choice1="STYLE"
                       st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+")"
+                      st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7,field8) VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE",choice1)
                       question=input("Would you like to add more ?(Y)")
                       if question.lower()=="y":
                           choice2=input("Enter the number near the field you want to add :")
@@ -96,9 +97,10 @@ def homepage():
                           else:
                               choice2="STYLE"
                           st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+","+choice2+" "+datatype2+")"
-                      
+                          st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7,field8,field9) VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE",choice1,choice2)
                 else:
                     st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT"+")"
+                    st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7) VALUES('{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE")
                 break
 
             elif Etype.lower()=="arts":
@@ -117,6 +119,7 @@ def homepage():
                        else:
                            choice1="STYLE"
                     st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+")"
+                    st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7,field8) VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE",choice1) 
                     question=input("Would you like to add more ?(Y)")
                     if question.lower()=="y":
                         choice2=input("Enter the number near the field you want to add :")
@@ -130,8 +133,10 @@ def homepage():
                           else:
                               choice2="STYLE"
                           st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+","+choice2+" "+datatype2+")"
+                          st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7,field8,field9) VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE",choice1,choice2)
                 else:
                     st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT"+")"
+                    st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7) VALUES('{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE")
                 break
 
             elif Etype.lower()=="science":
@@ -150,6 +155,7 @@ def homepage():
                        else:
                            choice1="PROJECT_TITLE"
                     st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+")"
+                    st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7,field8) VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE",choice1)
                     question=input("Would you like to add more ?(Y)")
                     if question.lower()=="y":
                         choice2=input("Enter the number near the field you want to add :")
@@ -163,9 +169,11 @@ def homepage():
                           else:
                               choice2="PROJECT_TITLE"
                           st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+","+choice2+" "+datatype2+")"
+                          st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7,field8,field9) VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE",choice1,choice2)
                 else:
                     st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT"+")"
-                    break
+                    st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7) VALUES('{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE")
+                break
 
             elif Etype.lower()=="sports":
                 print("The default fields are as follows:\nName\nDOB\nMobile number\nEmail\nAddress\nProfession\nAge\n\nYou can add 2 more fields of your choice if you wish")
@@ -182,6 +190,7 @@ def homepage():
                        else:
                            choice1="AGE_CATEGORY"
                     st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+")"
+                    st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7,field8) VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE",choice1)
                     question=input("Would you like to add more ?(Y)")
                     if question.lower()=="y":
                         choice2=input("Enter the number near the field you want to add :")
@@ -194,14 +203,18 @@ def homepage():
                           else:
                               choice2="AGE_CATEGORY"
                           st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT,"+choice1+" "+datatype1+","+choice2+" "+datatype2+")"
+                          st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7,field8,field9) VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE",choice1,choice2)
                 else:
                     st="CREATE TABLE"+" "+name+" "+"("+"NAME VARCHAR(30),DOB DATE,MOBILE INT,EMAIL VARCHAR(50),ADDRESS VARCHAR(100),PROFESSION VARCHAR(20),AGE INT"+")"
+                    st2="INSERT INTO APPLICATION_FIELDS(event_name,field1,field2,field3,field4,field5,field6,field7) VALUES('{}','{}','{}','{}','{}','{}','{}','{}')".format(name,"NAME","DOB","DATE","EMAIL","ADDRESS","PROFESSION","AGE")
                 break
             else:
                 print("Invalid input! Try again")
                 continue
               
         cursor.execute(st)
+        cursor.execute(st2)
+        con.commit()
 
         Ewrite=csv.writer(create_event)
         Ewrite.writerow([name,Etype,des])
@@ -214,17 +227,19 @@ def homepage():
             main_home()
         create_event.close()
     elif sel.lower()=='v':
-        view_event=open('create event.csv','r')
+        view_event=open('create event.csv','r',newline="")
         Eread=csv.reader(view_event)
         for i in Eread:
             for j in i:
-                namevent=i[0]
-                typevent=i[1]
-                desevent=i[2]
-            if len(i) !=0: 
-                  print('\nEvent name :',namevent)
-                  print('Event type :',typevent)
-                  print('Event description :',desevent)
+                if j=="EVENT NAME" or j=="TYPE" or j=="DESCRIPTION":
+                    continue
+                else:
+                    namevent=i[0]
+                    typevent=i[1]
+                    desevent=i[2] 
+                    print('\nEvent name :',namevent)
+                    print('Event type :',typevent)
+                    print('Event description :',desevent)    
         view_event.close()
         while True:
             apply=input('do you wish to apply to any of these events (Y/N)?')
@@ -232,7 +247,7 @@ def homepage():
                 a=True
                 while a:
                     getE=input('Type the event name of which you want to apply ..')
-                    view_event=open('create event.csv','r')
+                    view_event=open('create event.csv','r',newline="")
                     Eread=csv.reader(view_event)
                     for i in Eread:
                         if getE in i:
@@ -295,7 +310,6 @@ print("\t\t\t\t EVENT SHARE \t\t\t\t")
 print("\t\t A place where organizers meet participants\n\n\n")
 
 #Homepage
-main_home()
-
-homepage()
-
+while True:
+    main_home()
+    homepage()
