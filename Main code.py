@@ -31,29 +31,54 @@ def signup():
             re_enter=input("Enter password : ")
         if password == re_enter:
             break
+    while True:
+        file1=open("Login credentials.csv","r",newline="")
+        a=csv.reader(file1)
+        email=input("Enter your email id :")
+        if '@' not in email:
+            print("Invalid email id. Try again")
+            continue
+        else:
+            for i in a:
+                if email in i:
+                    print("An account is already created using this mail id")
+                    continue
+            else:
+                break
+                file1.close()
     file1=open("Login credentials.csv","a")
     a=csv.writer(file1)
-    a.writerow([username,password])
+    a.writerow([username,password,email])
     print("Login to your account again to continue.\n")
     file1.close()
 
 #Login function
 def login():
+    email=''
     while True:
         username=input("Enter your username : ")
         password=input("Enter password : ")
-        lst=[username,password]
         file1=open("Login credentials.csv","r",newline="")
         a=csv.reader(file1)
+        for i in a:
+            if username not in i:
+                continue
+            else:
+                email=i[2]
+                file1.close()
+                break
+        file1=open("Login credentials.csv","r",newline="")
+        a=csv.reader(file1)
+        lst=[username,password,email]
         if lst not in a:
             print("Username or password is incorrect")
             continue
 
         else:
-            '''print('\nLogging in',end='')
+            print('\nLogging in',end='')
             for i in range(7):
                 t.sleep(0.5)
-                print('.',end='')'''
+                print('.',end='')
             print("\n\n          Welcome",username)
             break
     file1.close()
