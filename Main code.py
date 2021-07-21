@@ -4,14 +4,18 @@ import time as t
 import sys
 import mysql.connector as sql
 import datetime
+from prettytable import PrettyTable
 
 #Establishing connection with MySQL
 con=sql.connect(host="localhost",user="ADLI",passwd="Adli@0805",database="EVENTS")
 cursor=con.cursor()
 
+#Variable is created in global scope for access to multiple functions
+username=''
 
 #Signup function 
 def signup():
+    global username
     username=input("Your username : ")
     file1=open("Login credentials.csv","r",newline="")
     while True:
@@ -55,6 +59,7 @@ def signup():
 #Login function
 def login():
     email=''
+    global username
     while True:
         username=input("Enter your username : ")
         password=input("Enter password : ")
@@ -83,9 +88,49 @@ def login():
             break
     file1.close()
 
+#Viewing details of appplicants
+def myevent():
+        global username
+        file1=open("create event.csv",'r')
+        a=csv.reader(file1)
+        for i in a:
+            if i[3]==username:
+                namevent=i[0]
+                typevent=i[1]
+                desevent=i[2]
+                print('\nEvent name :',namevent)
+                print('Event type :',typevent)
+                print('Event description :',desevent)
+        while True:
+            getE=input("Enter the name of event you wish to access :")
+            try:
+                cursor.execute("SELECT * FROM "+getE+";")
+                a=cursor.fetchall()
+                cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='{}';".format(getE))
+                b=cursor.fetchall()
+                b2=[]
+                x=PrettyTable()
+                for i in b:
+                    for j in i:
+                        b2.append(j)
+                x.field_names=b2
+                for i in a:
+                    if i == ():
+                        print("No one has applied to your event yet")
+                        break
+                    else:
+                        x.add_row(i)
+                else:
+                    print(x)
+                    break
+            except sql.errors.ProgrammingError:
+                print("INVALID INPUT. TRY AGAIN !!!!")
+                continue
+
 #Home page function
 def homepage():
-    sel=input('\nIf you want to create an event type ''c'' \nIf you want to view existing events type ''v''>>>>>>>>>>::')
+    global username
+    sel=input('\nIf you want to create an event type ''c'' \nIf you want to view existing events type ''v'' \nIf you want to go to my events type ''m''>>>>>>>>>>::')
     if sel.lower()=='c':
         create_event=open('create event.csv','a',newline="")
         name=input('Enter event name :')
@@ -243,7 +288,7 @@ def homepage():
         con.commit()
 
         Ewrite=csv.writer(create_event)
-        Ewrite.writerow([name,Etype,des])
+        Ewrite.writerow([name,Etype,des,username])
         create_event.close()
         print('  EVENT UPDATED! ')
         Q=input('\nIf you want to go back to home page type  ''H'' \nTo logout type  ''O'' ? :')
@@ -252,6 +297,13 @@ def homepage():
         elif Q.upper()=='O':
             main_home()
         create_event.close()
+    elif sel.lower()=='m':
+        myevent()
+        Q=input('\nIf you want to go back to home page type  ''H'' \nTo logout type  ''O'' ? :')
+        if Q.upper()=='H':
+            homepage()
+        elif Q.upper()=='O':
+            main_home()
     elif sel.lower()=='v':
         row_count=0
         for row in open('create event.csv','r'):
@@ -274,10 +326,10 @@ def homepage():
          
         for i in Eread:
             for j in i:
-                if j=="EVENT NAME" or j=="TYPE" or j=="DESCRIPTION":
+                if j=="EVENT NAME" or j=="TYPE" or j=="DESCRIPTION" or j=="CREATOR":
                     continue
             else:
-                if j=="EVENT NAME" or j=="TYPE" or j=="DESCRIPTION":
+                if j=="EVENT NAME" or j=="TYPE" or j=="DESCRIPTION" or j=="CREATOR":
                     continue
                 namevent=i[0]
                 typevent=i[1]
