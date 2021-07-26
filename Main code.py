@@ -80,10 +80,10 @@ def login():
             continue
 
         else:
-            print('\nLogging in',end='')
+            '''print('\nLogging in',end='')
             for i in range(7):
                 t.sleep(0.5)
-                print('.',end='')
+                print('.',end='')'''
             print("\n\n          Welcome",username)
             break
     file1.close()
@@ -93,39 +93,81 @@ def myevent():
         global username
         file1=open("create event.csv",'r')
         a=csv.reader(file1)
-        for i in a:
-            if i[3]==username:
-                namevent=i[0]
-                typevent=i[1]
-                desevent=i[2]
-                print('\nEvent name :',namevent)
-                print('Event type :',typevent)
-                print('Event description :',desevent)
-        while True:
-            getE=input("Enter the name of event you wish to access :")
-            try:
-                cursor.execute("SELECT * FROM "+getE+";")
-                a=cursor.fetchall()
-                cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='{}';".format(getE))
-                b=cursor.fetchall()
-                b2=[]
-                x=PrettyTable()
-                for i in b:
-                    for j in i:
-                        b2.append(j)
-                x.field_names=b2
-                for i in a:
-                    if i == ():
-                        print("No one has applied to your event yet")
-                        break
+        rows=0
+        noe=0
+        for row in open('create event.csv','r'):
+            rows+=1
+         
+            if rows==0:
+                 continue
+                 
+            for i in a:
+                if i[3]==username:
+                     noe=1
+                     namevent=i[0]
+                     typevent=i[1]
+                     desevent=i[2]
+                     print('\nEvent name :',namevent)
+                     print('Event type :',typevent)
+                     print('Event description :',desevent)
+                elif i[3]!=username:
+                     noe=2
+                     continue
+                elif i==[]:
+                     continue
+                break
+        if noe ==2:
+            
+            print('no event created')
+            Q=input('\nIf you want to go back to home page type  ''H'' \nTo logout type  ''O'' ? :')
+            if Q.upper()=='H':
+                homepage()
+            elif Q.upper()=='O':
+                main_home()
+            else:
+                print("Invalid input")
+        elif noe==1:
+            while True:
+                getE=input("Enter the name of event you wish to access :")
+                try:
+                    cursor.execute("SELECT * FROM "+getE+";")
+                    a=cursor.fetchall()
+                    count=cursor.rowcount
+                    cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='{}';".format(getE))
+                    b=cursor.fetchall()
+                    b2=[]
+                    x=PrettyTable()
+                    for i in b:
+                        for j in i:
+                            b2.append(j)
+                    x.field_names=b2
+                    if count==0:
+                        print("No one has applied to your event yet. Check again Later !!!!")
+                        while True:
+                            Q=input('\nIf you want to go back to home page type  ''H'' \nTo logout type  ''O'' ? :')
+                            if Q.upper()=='H':
+                                homepage()
+                            elif Q.upper()=='O':
+                                main_home()
+                            else:
+                                print("Invalid input")
+                                continue
                     else:
-                        x.add_row(i)
-                else:
-                    print(x)
-                    break
-            except sql.errors.ProgrammingError:
-                print("INVALID INPUT. TRY AGAIN !!!!")
-                continue
+                        for i in a:
+                            x.add_row(i)
+                        print(x)
+                        while True:
+                            Q=input('\nIf you want to go back to home page type  ''H'' \nTo logout type  ''O'' ? :')
+                            if Q.upper()=='H':
+                                homepage()
+                            elif Q.upper()=='O':
+                                main_home()
+                            else:
+                                print("Invalid input")
+                                continue
+                except sql.errors.ProgrammingError:
+                    print("INVALID INPUT. TRY AGAIN !!!!")
+                    continue
 
 #Home page function
 def homepage():
