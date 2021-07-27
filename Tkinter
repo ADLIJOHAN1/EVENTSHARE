@@ -1,0 +1,74 @@
+from tkinter import*
+from tkinter.ttk import*
+import time
+import csv
+
+window=Tk()
+
+#Canvas
+canvas=Canvas(window,height=600,width=800)
+canvas.grid(columnspan=7,rowspan=7)
+
+#Icon and Title text
+icon=PhotoImage(file="icon.png")
+window.iconphoto(False,icon)
+window.title("EventShare")
+
+#LoadingScreen
+logo=PhotoImage(file='logo.png')
+logo_label=Label(window,image=logo)
+logo_label.grid(row=2,column=3)
+Lbar=Progressbar(window,orient = HORIZONTAL,length=300,mode='determinate')
+for i in range(0,310,10):
+    Lbar['value']=i
+    window.update_idletasks()
+    time.sleep(0.3)
+    Lbar.grid(row=3,column=3)
+
+logo_label.destroy()
+Lbar.destroy()
+
+#SignUp
+username_text=Label(window,text="Username",font=("Arial Bold",14))
+username_text.grid(row=2,column=2,columnspan=1)
+username_entry=Entry(window,font=("Arial Bold",14))
+username_entry.grid(row=2,column=3)
+password_text=Label(window,text="Password",font=("Arial Bold",14))
+password_text.grid(row=3,column=2)
+password_entry=Entry(window,font=("Arial Bold",14),show="*")
+password_entry.grid(row=3,column=3)
+email_text=Label(window,text="Email",font=("Arial Bold",14))
+email_text.grid(row=4,column=2)
+email_entry=Entry(window,font=("Arial Bold",14))
+email_entry.grid(row=4,column=3)
+
+def signup():
+    global username_entry
+    global password_entry
+    global email_entry
+    username=username_entry.get()
+    password=password_entry.get()
+    email=email_entry.get()
+    file1=open("Login credentials.csv","a+",newline="")
+    a=csv.reader(file1)
+    if '@' not in email:
+        warning_text=Label(window,text="Invalid Email Address")
+        warning_text.place(x=335,y=410)
+    for i in a:
+        if username in i:
+            warning_text=Label(window,text="Username Already Taken")
+            warning_text.place(x=335,y=210)
+        if email in i:
+            warning_text=Label(window,text="Account Already Exists")
+            warning_text.grid(row=1,column=3)
+        if username not in i and email not in i:
+            lst=[username,email,password]
+            a=csv.writer(file1)
+            a.writerow(lst)
+            signup_button.destroy()
+        
+signup_button=Button(window,text="SignUp",command=signup)
+signup_button.grid(row=5,column=3)
+    
+
+mainloop()
